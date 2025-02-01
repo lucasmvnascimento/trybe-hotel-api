@@ -1,4 +1,6 @@
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using TrybeHotel.Models;
 using TrybeHotel.Repository;
 
@@ -16,18 +18,25 @@ namespace TrybeHotel.Controllers
         
         [HttpGet]
         public IActionResult GetCities(){
-           throw new NotImplementedException();
+            return Ok(_repository.GetCities());
         }
 
         [HttpPost]
         public IActionResult PostCity([FromBody] City city){
-            throw new NotImplementedException();
+            return StatusCode(StatusCodes.Status201Created, _repository.AddCity(city));
         }
-        
-        // 3. Desenvolva o endpoint PUT /city
+
         [HttpPut]
         public IActionResult PutCity([FromBody] City city){
-            throw new NotImplementedException();
+            try
+            {
+                var updatedCity = _repository.UpdateCity(city);
+                return Ok(updatedCity);
+            }
+            catch (InvalidDataException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
         }
     }
 }

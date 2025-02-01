@@ -24,7 +24,17 @@ namespace TrybeHotel.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "Client")]
         public IActionResult Add([FromBody] BookingDtoInsert bookingInsert){
-            throw new NotImplementedException();
+            try
+            {
+                var token = HttpContext.User.Identity as ClaimsIdentity;
+                var email = token!.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)!.Value;
+                var newBooking = _repository.Add(bookingInsert, email);
+                return Created("booking", newBooking);
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
 
 
@@ -32,7 +42,16 @@ namespace TrybeHotel.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "Client")]
         public IActionResult GetBooking(int Bookingid){
-            throw new NotImplementedException();
+            try
+            {
+                var token = HttpContext.User.Identity as ClaimsIdentity;
+                var email = token!.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)!.Value;
+                return Ok(_repository.GetBooking(Bookingid, email));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
     }
 }

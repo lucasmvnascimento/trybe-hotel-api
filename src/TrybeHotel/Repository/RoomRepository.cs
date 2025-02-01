@@ -11,19 +11,55 @@ namespace TrybeHotel.Repository
             _context = context;
         }
 
-        // 7. Refatore o endpoint GET /room
-        public IEnumerable<RoomDto> GetRooms(int HotelId)
-        {
-           throw new NotImplementedException();
+        public IEnumerable<RoomDto> GetRooms(int HotelId) {
+            var query = _context.Rooms.Where(r => r.HotelId == HotelId)
+                .Select(r => new RoomDto
+                {
+                    RoomId = r.RoomId,
+                    Name = r.Name,
+                    Capacity = r.Capacity,
+                    Image = r.Image,
+                    Hotel = new HotelDto
+                    {
+                        HotelId = r.Hotel!.HotelId,
+                        Name = r.Hotel.Name,
+                        Address = r.Hotel.Address,
+                        CityId = r.Hotel.CityId,
+                        CityName = r.Hotel.City!.Name
+                    }
+                });
+            return query.ToList();
         }
 
-        // 8. Refatore o endpoint POST /room
         public RoomDto AddRoom(Room room) {
-            throw new NotImplementedException();
+            _context.Rooms.Add(room);
+            _context.SaveChanges();
+            var newRoom = _context.Rooms
+                .Where(r => r.RoomId == room.RoomId)
+                .Select(r => new RoomDto
+                {
+                    RoomId = r.RoomId,
+                    Name = r.Name,
+                    Capacity = r.Capacity,
+                    Image = r.Image,
+                    Hotel = new HotelDto
+                    {
+                        HotelId = r.Hotel!.HotelId,
+                        Name = r.Hotel.Name,
+                        Address = r.Hotel.Address,
+                        CityId = r.Hotel.CityId,
+                        CityName = r.Hotel.City!.Name
+                    }
+                }).First();
+            return newRoom;
         }
 
         public void DeleteRoom(int RoomId) {
-           throw new NotImplementedException();
+            var room = _context.Rooms.Find(RoomId);
+            if (room != null) {
+                _context.Rooms.Remove(room);
+                _context.SaveChanges();
+            }
         }
     }
 }
