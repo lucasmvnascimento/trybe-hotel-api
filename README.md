@@ -4,7 +4,7 @@ Projeto desenvolvido durante aprendizado na Trybe que envolve a criação de uma
 
 ## Desenvolvimento
 
-Esta aplicação foi desenvolvida utilizando C# e ASP.NET, juntamente com banco de dados SQL Server. A partir dela, é possível fazer o gerenciamento de `Usuários`, `Cidades`, `Hotéis`, `Quartos` e `Reservas`, juntamente com a funcionalidade de busca de hotéis mais próximos de acordo com um endereço. Aplicação contém camadas de autorização e autenticação utilizando JWT.
+Esta aplicação foi desenvolvida utilizando C# e ASP.NET, juntamente com banco de dados SQL Server. A partir dela, é possível fazer o gerenciamento de `Users`, `Cities`, `Hotels`, `Rooms` e `Bookings`, juntamente com a funcionalidade de busca de hotéis mais próximos de acordo com um endereço. Aplicação contém camadas de autorização e autenticação utilizando JWT.
 
 ### Tecnologias
 
